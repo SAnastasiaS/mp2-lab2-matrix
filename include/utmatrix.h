@@ -24,7 +24,7 @@ protected:
   int Size;       // размер вектора
   int StartIndex; // индекс первого элемента вектора
 public:
-  TVector(int s = 10, int si = 0);
+  TVector(int s = 10, int si = 0); 
   TVector(const TVector &v);                // конструктор копирования
   ~TVector();
   int GetSize()      { return Size;       } // размер вектора
@@ -47,41 +47,91 @@ public:
   // ввод-вывод
   friend istream& operator>>(istream &in, TVector &v)
   {
-    for (int i = 0; i < v.Size; i++)
-      in >> v.pVector[i];
-    return in;
+    //for (int i = 0; i < v.Size; i++)
+    //  in >> v.pVector[i];
+    //return in;
   }
   friend ostream& operator<<(ostream &out, const TVector &v)
   {
-    for (int i = 0; i < v.Size; i++)
-      out << v.pVector[i] << ' ';
-    return out;
+    //for (int i = 0; i < v.Size; i++)
+    //  out << v.pVector[i] << ' ';
+    //return out;
   }
 };
 
 template <class ValType>
-TVector<ValType>::TVector(int s, int si)
+TVector<ValType>::TVector(int s, int si) 
 {
+		if ((s<=0)||(si<0)||(s>MAX_VECTOR_SIZE))
+	{
+		throw "Incorrect entries";
+	}
+	
+	pVector = new ValType[s];
+	if (pVector != NULL)
+	{
+		Size = s;
+		StartIndex = si;
+		for(int i = 0; i < s; i++)
+		{
+			pVector[i] = 0;
+		}
+	}
+	
+	if (pVector == NULL)
+	{
+		throw "Memory has not been allocated";
+	}
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> //конструктор копирования
 TVector<ValType>::TVector(const TVector<ValType> &v)
 {
+	Size = v.Size;
+	StartIndex = v.StartIndex;
+	pVector = new ValType[Size];
+	for (int i = 0; i < Size; ++i)
+	{
+		pVector[i] = v.pVector[i];
+	}
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType>
 TVector<ValType>::~TVector()
 {
+	delete [] pVector;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
+	if ((pos<0)||(pos>=(StartIndex+Size)))
+	{
+		throw "Incorrect position"; //?
+	}
+	return pVector[pos-StartIndex]; 
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
 bool TVector<ValType>::operator==(const TVector &v) const
 {
+	bool result = true;
+	if (Size!=v.Size)
+	{
+		result = false;
+		return result;
+	}
+	else
+		for (int i = 0; i < Size; ++i)
+		{
+			if (pVector[i]!=v.pVector[i])
+			{
+				result = false;
+				return result;
+			}
+		}
+	return result;
+			
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
