@@ -46,17 +46,21 @@ public:
 	ValType  operator*(const TVector &v) const;     // скалярное произведение
 
 	// ввод-вывод
-	//friend istream& operator>>(istream &in, TVector &v)
-	//{
-	//  for (int i = 0; i < v.Size; i++)
-	//    in >> v.pVector[i];
-	//  return in;
-	//}
+	template <class ValType>//??
+	friend istream& operator>>(istream &in, TVector<ValType> &v);
 
 	template<class ValType> 
 	friend ostream& operator<<(ostream &out, const TVector<ValType> &v);
 
 };
+
+template <class ValType>
+istream& operator>>(istream &in, TVector<ValType> &v)
+{
+	for (int i = 0; i < v.Size; i++)
+	in >> v.pVector[i];
+	return in;
+} 
 
 template <class ValType>
 ostream& operator<<(ostream &out, const TVector<ValType> &v)

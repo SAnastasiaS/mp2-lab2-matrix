@@ -338,4 +338,32 @@ TEST(TVector, cant_multiply_vectors_with_not_equal_size)
   ASSERT_ANY_THROW(v*v1);
 }
 
+TEST(TVector, input)
+{
+	TVector<int> v(2), v1(2);
+	v[0] = 3;
+	v[1] = 2;
+
+	std::stringstream ss;
+	ss << "3 2";
+
+	ss >> v1;
+
+	EXPECT_EQ(v, v1);
+}
+
+TEST(TVector, output)
+{
+	TVector<int> v(2);
+	v[0] = 3;
+	v[1] = 2;
+
+	std::stringstream ss;
+	ss << v;
+
+	string str1;
+	getline(ss, str1);
+
+	EXPECT_EQ(string("3 2 "), str1);
+}
 
