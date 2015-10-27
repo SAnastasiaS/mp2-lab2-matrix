@@ -12,10 +12,10 @@ TEST(TVector, cant_create_too_large_vector)
   ASSERT_ANY_THROW(TVector<int> v(MAX_VECTOR_SIZE + 1));
 }
 
-TEST(TVector, throws_when_create_vector_with_zero_length)
-{
-  ASSERT_ANY_THROW(TVector<int> v(0));
-}
+//TEST(TVector, throws_when_create_vector_with_zero_length)
+//{
+//  ASSERT_ANY_THROW(TVector<int> v(0));
+//}
 
 TEST(TVector, throws_when_create_vector_with_negative_length)
 {
@@ -337,7 +337,7 @@ TEST(TVector, cant_multiply_vectors_with_not_equal_size)
 
   ASSERT_ANY_THROW(v*v1);
 }
-
+//___________________________________________________________ввод
 TEST(TVector, input)
 {
 	TVector<int> v(2), v1(2);
@@ -351,7 +351,7 @@ TEST(TVector, input)
 
 	EXPECT_EQ(v, v1);
 }
-
+//___________________________________________________________вывод
 TEST(TVector, output)
 {
 	TVector<int> v(2);
