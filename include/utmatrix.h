@@ -338,9 +338,8 @@ bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
 	else
 	{
 		for(int j = 0; j < Size; ++j)
-			for (int k = j; k < Size; ++k)
-				if (pVector[j][k]!=mt.pVector[j][k])
-					return false;
+			if (pVector[j]!=mt.pVector[j])
+				return false;
 	}
 
 	return true;
@@ -359,8 +358,7 @@ bool TMatrix<ValType>::operator!=(const TMatrix<ValType> &mt) const
 	else
 	{
 		for(int j = 0; j < Size; ++j)
-			for (int k = j; k < Size; ++k)
-				if (pVector[j][k]!=mt.pVector[j][k])
+			if (pVector[j]!=mt.pVector[j])
 					return true;
 	}
 
@@ -395,10 +393,12 @@ TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 {
 	if (Size!=mt.Size)
 		throw "Different sizes of matrixes";
-	TMatrix temp (Size);
-		for(int j = 0; j < Size; ++j)
-			for (int k = j; k < Size; ++k)
-				temp.pVector[j][k] = pVector[j][k] + mt.pVector[j][k];
+	TMatrix<ValType> temp (Size);
+		for(int i = 0; i < Size; ++i)
+		temp.pVector[i] = pVector[i] + mt.pVector[i];
+		//for(int j = 0; j < Size; ++j)
+		//	for (int k = j; k < Size; ++k)
+		//		temp.pVector[j][k] = pVector[j][k] + mt.pVector[j][k];
 		return temp;
 } /*-------------------------------------------------------------------------*/
 
@@ -407,10 +407,12 @@ TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType> &mt)
 {
 		if (Size!=mt.Size)
 		throw "Different sizes of matrixes";
-	TMatrix temp (Size);
-		for(int j = 0; j < Size; ++j)
-			for (int k = j; k < Size; ++k)
-				temp.pVector[j][k] = pVector[j][k] - mt.pVector[j][k];
+	TMatrix<ValType> temp (Size);
+	for(int i = 0; i < Size; ++i)
+		temp.pVector[i] = pVector[i] + mt.pVector[i];//НЕВЕРНО!
+		//for(int j = 0; j < Size; ++j)
+		//	for (int k = j; k < Size; ++k)
+		//		temp.pVector[j][k] = pVector[j][k] - mt.pVector[j][k];
 		return temp;
 } /*-------------------------------------------------------------------------*/
 

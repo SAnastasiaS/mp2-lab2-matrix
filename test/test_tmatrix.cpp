@@ -266,7 +266,10 @@ TEST(TMatrix, can_subtract_matrices_with_equal_size)
 	m2[0][0] = -1;
 	m2[0][1] = -1;
 
-	EXPECT_EQ(m2, m-m1);
+	TMatrix<int> m3(2);
+	m3 = m - m1;
+
+	EXPECT_EQ(m2, m3);
 }
 
 TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
