@@ -30,7 +30,8 @@ public:
 	~TVector();
 	int GetSize()      { return Size;       } // размер вектора
 	int GetStartIndex(){ return StartIndex; } // индекс первого элемента
-	ValType& operator[](int pos);             // доступ
+	ValType& operator[](int pos); 
+	ValType& operator[](int pos) const;     // доступ
 	bool operator==(const TVector &v) const;  // сравнение
 	bool operator!=(const TVector &v) const;  // сравнение
 	TVector& operator=(const TVector &v);     // присваивание
@@ -117,6 +118,22 @@ TVector<ValType>::~TVector()
 
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
+{
+	if (pos<StartIndex)
+	{
+		throw "[Index] < StartIndex";//СДЕЛАТЬ ТЕСТ?
+	}
+
+	if (pos>=(StartIndex+Size))
+	{
+		throw "[Index] >= StartIndex+Size"; 
+	}
+
+	return pVector[pos-StartIndex]; 
+} /*-------------------------------------------------------------------------*/
+
+template <class ValType> // доступ
+ValType& TVector<ValType>::operator[](int pos) const
 {
 	if (pos<StartIndex)
 	{
@@ -243,7 +260,7 @@ TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v) const
 		throw "StartIndex != v.StartIndex";//КАКОЙ ВАРИАНТ ПРАВИЛЬНЫЙ? ЧТО ДЕЛАТЬ, КОГДА ОНИ НЕ РАВНЫ?
 	if (Size != v.Size)
 		throw "Size != v.Size";
-	TVector temp(Size);
+	TVector temp(Size, StartIndex);
 	for (int i = 0; i < Size; ++i)
 		temp.pVector[i] = pVector[i] + v.pVector[i];
 	return temp;
@@ -256,7 +273,7 @@ TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v) const
 		throw "StartIndex != v.StartIndex";//КАКОЙ ВАРИАНТ ПРАВИЛЬНЫЙ? ЧТО ДЕЛАТЬ, КОГДА ОНИ НЕ РАВНЫ?
 	if (Size != v.Size)
 		throw "Size != v.Size";
-	TVector temp(Size);
+	TVector temp(Size, StartIndex);
 	for (int i = 0; i < Size; ++i)
 		temp.pVector[i] = pVector[i] - v.pVector[i];
 	return temp;
@@ -289,6 +306,7 @@ public:
 	TMatrix& operator= (const TMatrix &mt);        // присваивание
 	TMatrix  operator+ (const TMatrix &mt);        // сложение
 	TMatrix  operator- (const TMatrix &mt);        // вычитание
+	TMatrix  operator*(const TMatrix &mt);         // умножение
 
 	 //ввод / вывод
 	friend istream& operator>>(istream &in, TMatrix &mt)
@@ -313,6 +331,7 @@ TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)//
 		throw "Size<=0";
 	if (s>MAX_MATRIX_SIZE)
 		throw "Size>MAX_MATRIX_SIZE";
+
 	for (int i = 0; i < s; ++i)
 		pVector[i] = TVector<ValType>(s-i, i);
 } /*-------------------------------------------------------------------------*/
@@ -388,7 +407,7 @@ TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 	return *this;
 } /*-------------------------------------------------------------------------*/
 
-template <class ValType> // сложение //ВООБЩЕ МОЖНО СДЕЛАТЬ ПО-ДРУГОМУ
+template <class ValType> // сложение
 TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 {
 	if (Size!=mt.Size)
@@ -396,25 +415,36 @@ TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 	TMatrix<ValType> temp (Size);
 		for(int i = 0; i < Size; ++i)
 		temp.pVector[i] = pVector[i] + mt.pVector[i];
-		//for(int j = 0; j < Size; ++j)
-		//	for (int k = j; k < Size; ++k)
-		//		temp.pVector[j][k] = pVector[j][k] + mt.pVector[j][k];
+
 		return temp;
 } /*-------------------------------------------------------------------------*/
 
-template <class ValType> // вычитание //ВООБЩЕ МОЖНО СДЕЛАТЬ ПО-ДРУГОМУ
+template <class ValType> // вычитание 
 TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType> &mt)
 {
 		if (Size!=mt.Size)
 		throw "Different sizes of matrixes";
 	TMatrix<ValType> temp (Size);
 	for(int i = 0; i < Size; ++i)
-		temp.pVector[i] = pVector[i] + mt.pVector[i];//НЕВЕРНО!
-		//for(int j = 0; j < Size; ++j)
-		//	for (int k = j; k < Size; ++k)
-		//		temp.pVector[j][k] = pVector[j][k] - mt.pVector[j][k];
+		temp.pVector[i] = pVector[i] - mt.pVector[i];
 		return temp;
 } /*-------------------------------------------------------------------------*/
+
+template <class ValType> // умножение 
+TMatrix<ValType> TMatrix<ValType>::operator*(const TMatrix<ValType> &mt)
+{
+	if (Size!=mt.Size)
+		throw "Different sizes of matrixes";
+	TMatrix<ValType> temp (Size);
+	for(int i = 0; i < Size; ++i)
+		for (int j = i; j < Size; ++j)
+			for (int k = i; k <= j; ++k)
+				temp.pVector[i][j] += pVector[i][k]*mt.pVector[k][j];
+
+	return temp;
+} /*-------------------------------------------------------------------------*/
+
+
 
 // TVector О3 Л2 П4 С6
 // TMatrix О2 Л2 П3 С3
