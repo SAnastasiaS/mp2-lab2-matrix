@@ -226,7 +226,7 @@ TEST(TMatrix, can_assign_matrices_of_different_size)
 }
 
 
-TEST(TMatrix, can_add_matrices_with_equal_size)
+TEST(TMatrix, can_add_matrices_with_equal_size)//+
 {
 	TMatrix<int> m(2);
 	m[0][0] = 1;
@@ -252,7 +252,7 @@ TEST(TMatrix, cant_add_matrices_with_not_equal_size)
 	ASSERT_ANY_THROW(m1+m);
 }
 
-TEST(TMatrix, can_subtract_matrices_with_equal_size)
+TEST(TMatrix, can_subtract_matrices_with_equal_size)//-
 {
 	TMatrix<int> m(2);
 	m[0][0] = 1;
@@ -280,4 +280,37 @@ TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
 
 	ASSERT_ANY_THROW(m1-m);
 }
+
+TEST(TMatrix, can_multiply_matrices_with_equal_size)//*
+{
+	TMatrix<int> m(2);
+	m[0][0] = 1;
+	m[0][1] = 1;
+	m[1][1] = 1;
+
+	TMatrix<int> m1(2);
+	m1[0][0] = 2;
+	m1[0][1] = 2;
+	m1[1][1] = 2;
+
+	TMatrix<int> m2(2);
+	m2[0][0] = 2;
+	m2[0][1] = 4;
+	m2[1][1] = 2;
+
+	TMatrix<int> m3(2);
+	m3 = m*m1;
+
+	EXPECT_EQ(m2, m3);
+}
+
+TEST(TMatrix, cant_multiply_matrixes_with_not_equal_size)
+{
+	TMatrix<int> m(2);
+
+	TMatrix<int> m1(3);
+
+	ASSERT_ANY_THROW(m1*m);
+}
+
 

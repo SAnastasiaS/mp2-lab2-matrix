@@ -59,7 +59,7 @@ template <class ValType>
 istream& operator>>(istream &in, TVector<ValType> &v)
 {
 	for (int i = 0; i < v.Size; i++)
-	in >> v.pVector[i];
+		in >> v.pVector[i];
 	return in;
 } 
 
@@ -137,7 +137,7 @@ ValType& TVector<ValType>::operator[](int pos) const
 {
 	if (pos<StartIndex)
 	{
-		throw "[Index] < StartIndex";//СДЕЛАТЬ ТЕСТ?
+		throw "[Index] < StartIndex";
 	}
 
 	if (pos>=(StartIndex+Size))
@@ -286,7 +286,7 @@ ValType TVector<ValType>::operator*(const TVector<ValType> &v) const
 		throw "StartIndex != v.StartIndex";//КАКОЙ ВАРИАНТ ПРАВИЛЬНЫЙ? ЧТО ДЕЛАТЬ, КОГДА ОНИ НЕ РАВНЫ?
 	if (Size != v.Size)
 		throw "Size != v.Size";
-    ValType temp = ValType(0);
+	ValType temp = ValType(0);
 	for (int i = 0; i < Size; ++i)
 		temp += pVector[i]*v.pVector[i];
 	return temp;
@@ -308,7 +308,7 @@ public:
 	TMatrix  operator- (const TMatrix &mt);        // вычитание
 	TMatrix  operator*(const TMatrix &mt);         // умножение
 
-	 //ввод / вывод
+	//ввод / вывод
 	friend istream& operator>>(istream &in, TMatrix &mt)
 	{
 		for (int i = 0; i < mt.Size; i++)
@@ -378,7 +378,7 @@ bool TMatrix<ValType>::operator!=(const TMatrix<ValType> &mt) const
 	{
 		for(int j = 0; j < Size; ++j)
 			if (pVector[j]!=mt.pVector[j])
-					return true;
+				return true;
 	}
 
 	return false;
@@ -413,21 +413,21 @@ TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 	if (Size!=mt.Size)
 		throw "Different sizes of matrixes";
 	TMatrix<ValType> temp (Size);
-		for(int i = 0; i < Size; ++i)
+	for(int i = 0; i < Size; ++i)
 		temp.pVector[i] = pVector[i] + mt.pVector[i];
 
-		return temp;
+	return temp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычитание 
 TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType> &mt)
 {
-		if (Size!=mt.Size)
+	if (Size!=mt.Size)
 		throw "Different sizes of matrixes";
 	TMatrix<ValType> temp (Size);
 	for(int i = 0; i < Size; ++i)
 		temp.pVector[i] = pVector[i] - mt.pVector[i];
-		return temp;
+	return temp;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // умножение 
